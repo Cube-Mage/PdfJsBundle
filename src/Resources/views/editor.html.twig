@@ -44,7 +44,7 @@
 {# 3. JavaScript: 脚本也是自包含的 #}
 <script type="module">
     // 使用 import 导入库
-    import * as pdfjsLib from '{{ asset('bundles/cubemagepdfjs/build/pdf.mjs') }}';
+    import * as pdfjsLib from '{{ asset('bundles/cubemagepdfjs/pdfjs/build/pdf.mjs') }}';
 
     // 立即执行的函数表达式 (IIFE) 来创建局部作用域
     (function() {
@@ -60,7 +60,7 @@
         const pageNumSpan = container.querySelector('[data-type="page-num"]');
         const pageCountSpan = container.querySelector('[data-type="page-count"]');
 
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ asset('bundles/cubemagepdfjs/build/pdf.worker.mjs') }}';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ asset('bundles/cubemagepdfjs/pdfjs/build/pdf.worker.mjs') }}';
 
         const pdfUrl = '{{ pdf_url | e('js') }}';
         const saveUrl = '{{ save_url | e('js') }}';
