@@ -28,7 +28,7 @@
    ```php
    return [
        // ... 其他 bundles
-       \CubeMage\PdfJsBundle\src\CubeMagePdfJsBundle::class => ['all' => true],
+       CubeMage\PdfJsBundle\CubeMagePdfJsBundle::class => ['all' => true],
    ];
    ```
 
