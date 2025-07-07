@@ -1,0 +1,114 @@
+{# CubeMage/PdfJsBundle/Resources/views/editor.html.twig #}
+{% set container_id = 'pdf_editor_' ~ random() %}
+
+{# 1. CSS: 样式被限定在唯一的容器ID内，以减少冲突 #}
+<style>
+    #{{ container_id }} .pdf-controls {
+        padding: 10px;
+        background: #f0f0f0;
+        border: 1px solid #ccc;
+        border-bottom: none;
+    }
+    #{{ container_id }} .pdf-canvas-container {
+                            max-height: 80vh;
+                            overflow: auto;
+                            border: 1px solid #ccc;
+                        }
+    #{{ container_id }} canvas {
+                            display: block;
+                            margin: 0 auto;
+                        }
+    #{{ container_id }} .pdf-save-button {
+                            float: right;
+                            background-color: #4CAF50;
+                            color: white;
+                            border: none;
+                            padding: 8px 12px;
+                            cursor: pointer;
+                        }
+</style>
+
+{# 2. HTML: 所有元素都包含在唯一的容器中 #}
+<div id="{{ container_id }}">
+    <div class="pdf-controls">
+        <button data-action="prev">Previous</button>
+        <button data-action="next">Next</button>
+        <span>Page: <span data-type="page-num">1</span> / <span data-type="page-count">0</span></span>
+        <button class="pdf-save-button" data-action="save">Save Form Data</button>
+    </div>
+    <div class="pdf-canvas-container">
+        <canvas data-type="canvas"></canvas>
+    </div>
+</div>
+
+{# 3. JavaScript: 脚本也是自包含的 #}
+<script type="module">
+    // 使用 import 导入库
+    import * as pdfjsLib from '{{ asset('bundles/cubemagepdfjs/build/pdf.mjs') }}';
+
+    // 立即执行的函数表达式 (IIFE) 来创建局部作用域
+    (function() {
+        // 获取对我们独特容器的引用
+        const container = document.getElementById('{{ container_id }}');
+        if (!container) return;
+
+        // 从容器中查询元素，而不是从全局 document 查询
+        const canvas = container.querySelector('[data-type="canvas"]');
+        const prevButton = container.querySelector('[data-action="prev"]');
+        const nextButton = container.querySelector('[data-action="next"]');
+        const saveButton = container.querySelector('[data-action="save"]');
+        const pageNumSpan = container.querySelector('[data-type="page-num"]');
+        const pageCountSpan = container.querySelector('[data-type="page-count"]');
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ asset('bundles/cubemagepdfjs/build/pdf.worker.mjs') }}';
+
+        const pdfUrl = '{{ pdf_url | e('js') }}';
+        const saveUrl = '{{ save_url | e('js') }}';
+
+        let pdfDoc = null;
+        let pageNum = 1;
+
+        // ... 此处是所有 pdf.js 的渲染逻辑 (renderPage, getAnnotations, 等) ...
+        // 注意：所有DOM操作都应该基于 `container` 变量进行，以确保作用域正确
+
+        function renderPage(num) {
+            pdfDoc.getPage(num).then(page => {
+                const viewport = page.getViewport({ scale: 1.5 });
+                const ctx = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                page.render({ canvasContext: ctx, viewport: viewport });
+                pageNumSpan.textContent = num;
+            });
+        }
+
+        // 绑定事件
+        prevButton.addEventListener('click', () => {
+            if (pageNum <= 1) return;
+            pageNum--;
+            renderPage(pageNum);
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            renderPage(pageNum);
+        });
+
+        saveButton.addEventListener('click', () => {
+            // ... 提取表单数据的逻辑 ...
+            // getAnnotations ...
+
+            // fetch(saveUrl, { ... });
+            alert(`Data would be saved to: ${saveUrl}`);
+        });
+
+        // 初始加载PDF
+        pdfjsLib.getDocument(pdfUrl).promise.then(doc => {
+            pdfDoc = doc;
+            pageCountSpan.textContent = pdfDoc.numPages;
+            renderPage(pageNum);
+        });
+
+    })(); // 立即执行
+</script>

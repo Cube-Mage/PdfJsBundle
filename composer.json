@@ -1,0 +1,21 @@
+{
+  "name": "cubemage/pdfjs-bundle",
+  "type": "symfony-bundle",
+  "description": "Integrates Mozilla PDF.js into Symfony applications.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "CubeMage",
+      "email": "cubemage.com@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "symfony/framework-bundle": "^5.4 || ^6.0",
+    "symfony/twig-bundle": "^5.4 || ^6.0",
+    "symfony/asset": "^5.4 || ^6.0"
+  },
+  "autoload": {
+    "psr-4": { "CubeMage\\PdfJsBundle\\": "" }
+  }
+}
