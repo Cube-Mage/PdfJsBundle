@@ -1,7 +1,7 @@
 <?php
 
 // src/CubeMage/PdfJsBundle/CubeMagePdfJsBundle.php
-namespace CubeMage\PdfJsBundle\src;
+namespace CubeMage\PdfJsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

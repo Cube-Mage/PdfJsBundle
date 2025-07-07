@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeMage\PdfJsBundle\src\Twig;
+namespace CubeMage\PdfJsBundle\Twig;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;

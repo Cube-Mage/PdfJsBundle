@@ -16,6 +16,6 @@
     "symfony/asset": "^5.4 || ^6.0 || ^7.0"
   },
   "autoload": {
-    "psr-4": { "CubeMage\\PdfJsBundle\\": "" }
+    "psr-4": { "CubeMage\\PdfJsBundle\\": "src/" }
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeMage\PdfJsBundle\src\DependencyInjection;
+namespace CubeMage\PdfJsBundle\DependencyInjection;
 
 class CubeMagePdfJsExtension
 {
